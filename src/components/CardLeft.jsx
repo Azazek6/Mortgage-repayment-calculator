@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { resultCalculate } from "../features/mortgages/MortgagesSlice";
+import {
+  resultCalculate,
+  resetAll,
+} from "../features/mortgages/MortgagesSlice";
 import Input from "./Input";
 import Button from "./Button";
 import { Label } from "@/components/ui/label";
@@ -16,6 +19,16 @@ const CardForm = () => {
     rate: "",
     type: "",
   });
+
+  const clear = () => {
+    setMortgage({
+      amount: "",
+      term: "",
+      rate: "",
+      type: "",
+    });
+    dispatch(resetAll());
+  };
 
   const handleChange = ({ target: { name, value } }) => {
     setMortgage({ ...mortgage, [name]: value });
@@ -38,7 +51,10 @@ const CardForm = () => {
         <h1 className="font-[PlusJakartaBold] text-xl text-[hsl(202,55%,16%)]">
           Mortgage Calculator
         </h1>
-        <span className="text-sm underline text-[hsl(200,24%,40%)] hover:text-[hsl(202,55%,16%)] transition-all duration-300 ease-in-out cursor-pointer">
+        <span
+          className="text-sm underline text-[hsl(200,24%,40%)] hover:text-[hsl(202,55%,16%)] transition-all duration-300 ease-in-out cursor-pointer"
+          onClick={clear}
+        >
           Clear All
         </span>
       </div>

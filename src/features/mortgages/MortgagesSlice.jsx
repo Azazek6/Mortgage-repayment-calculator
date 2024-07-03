@@ -25,9 +25,12 @@ export const MortgageSlice = createSlice({
       );
       state.value = monthlyPaymen ;
     },
+    resetAll: (state)=>{
+      state.value = 0
+    }
   },
 });
 
-export const { resultCalculate } = MortgageSlice.actions;
+export const { resultCalculate, resetAll } = MortgageSlice.actions;
 
 export default MortgageSlice.reducer;
