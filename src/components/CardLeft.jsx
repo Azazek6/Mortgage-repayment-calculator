@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { resultCalculate } from "../features/mortgages/MortgagesSlice";
 import Input from "./Input";
 import Button from "./Button";
 import { Label } from "@/components/ui/label";
@@ -6,9 +8,28 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { calculatorIcon } from "../assets/icons/icons";
 
 const CardForm = () => {
+  const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState("");
+  const [mortgage, setMortgage] = useState({
+    amount: "",
+    term: "",
+    rate: "",
+    type: "",
+  });
+
+  const handleChange = ({ target: { name, value } }) => {
+    setMortgage({ ...mortgage, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(resultCalculate(mortgage));
+  };
   return (
-    <div className="flex flex-col py-6 px-6 gap-5 ">
+    <form
+      onSubmit={handleSubmit}
+      className="md:w-[50%] flex flex-col py-6 px-6 gap-5 "
+    >
       <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between gap-2">
         <h1 className="font-[PlusJakartaBold] text-xl text-[hsl(202,55%,16%)]">
           Mortgage Calculator
@@ -17,13 +38,34 @@ const CardForm = () => {
           Clear All
         </span>
       </div>
-      <Input title="Mortgage Amount" icon="£" direction="left" />
+      <Input
+        title="Mortgage Amount"
+        icon="£"
+        direction="left"
+        handleChange={handleChange}
+        name="amount"
+        value={mortgage.amount}
+      />
       <div className="w-[100%] flex flex-col xs:flex-row gap-5">
         <div className="w-[100%]">
-          <Input title="Mortgage Term" icon="years" direction="right" />
+          <Input
+            title="Mortgage Term"
+            icon="years"
+            direction="right"
+            handleChange={handleChange}
+            name="term"
+            value={mortgage.term}
+          />
         </div>
         <div className="w-[100%]">
-          <Input title="Interest Rate" icon="%" direction="right" />
+          <Input
+            title="Interest Rate"
+            icon="%"
+            direction="right"
+            handleChange={handleChange}
+            name="rate"
+            value={mortgage.rate}
+          />
         </div>
       </div>
       <div className="flex flex-col gap-2">
@@ -60,7 +102,7 @@ const CardForm = () => {
         </RadioGroup>
         <Button title={"Calculate Repayments"} icon={calculatorIcon} />
       </div>
-    </div>
+    </form>
   );
 };
 

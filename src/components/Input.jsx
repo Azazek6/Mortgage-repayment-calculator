@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-const Input = ({ title, direction, icon }) => {
+const Input = ({ title, direction, icon, handleChange, name, value }) => {
   return (
     <div className="flex flex-col gap-2">
       <label
@@ -16,6 +16,9 @@ const Input = ({ title, direction, icon }) => {
             </span>
             <input
               type="number"
+              onChange={handleChange}
+              name={name}
+              value={value}
               className="w-[100%] pl-12 border border-[hsl(200,24%,40%)] border-l-0 rounded-sm p-2 focus:outline-none"
             />
           </>
@@ -23,6 +26,9 @@ const Input = ({ title, direction, icon }) => {
           <>
             <input
               type="number"
+              onChange={handleChange}
+              name={name}
+              value={value}
               className="w-[100%] pr-12 border border-[hsl(200,24%,40%)] border-r-0 rounded-sm p-2 focus:outline-none"
             />
             <span className="font-[PlusJakartaBold] absolute right-0 inset-y-0 flex items-center pr-4 pl-3 bg-[hsl(202,86%,94%)] border-r border-t border-b border-[hsl(200,24%,40%)] text-[hsl(200,24%,40%)] h-full px-2 rounded-r-sm text-sm">
