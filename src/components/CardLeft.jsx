@@ -23,6 +23,10 @@ const CardForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (mortgage.amount == "" || mortgage.term == "" || mortgage.rate == "") {
+      alert("Los campos no deben estar vacios");
+      return;
+    }
     dispatch(resultCalculate(mortgage));
   };
   return (

@@ -5,7 +5,6 @@ import { emptyIcon } from "../assets/icons/icons";
 const CardRight = () => {
   const mortgage = useSelector((state) => state.mortgages.value);
 
-  console.log(mortgage);
   return (
     <>
       {mortgage > 0 ? (
@@ -24,7 +23,7 @@ const CardRight = () => {
                 Your monthly repayments
               </h3>
               <span className="font-[PlusJakartaBold] text-[hsl(61,70%,52%)] text-4xl">
-                £1,797.75
+                £{parseFloat(mortgage).toFixed(2)}
               </span>
               <Separator className="my-2 bg-[#243a47]" />
               <h3 className="text-[hsl(203,41%,72%)] text-lg">
