@@ -15,3 +15,9 @@ export const calculateMonthPayment = (amount, rate, year) => {
     (Math.pow(1 + rate, year) - 1)
   );
 };
+
+// Calcular el total a reembolsar
+export const totalRepayment = (total, year) => {
+  const numberOfPayments = parseInt(year) * 12;
+  return parseFloat(total) * numberOfPayments;
+};

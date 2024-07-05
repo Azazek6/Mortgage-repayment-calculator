@@ -2,17 +2,18 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   resultCalculate,
+  resultPaymentMonth,
   resetAll,
 } from "../features/mortgages/MortgagesSlice";
 import Input from "./Input";
 import Button from "./Button";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import InputRadio from "./InputRadio";
 import { calculatorIcon } from "../assets/icons/icons";
 
 const CardForm = () => {
   const dispatch = useDispatch();
-  const [selectedValue, setSelectedValue] = useState("");
+
+  const [errorState, setErrorState] = useState(false);
   const [mortgage, setMortgage] = useState({
     amount: "",
     term: "",
@@ -36,11 +37,24 @@ const CardForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (mortgage.amount == "" || mortgage.term == "" || mortgage.rate == "") {
-      alert("Los campos no deben estar vacios");
+
+    if (
+      mortgage.amount == "" ||
+      mortgage.term == "" ||
+      mortgage.rate == "" ||
+      mortgage.type == ""
+    ) {
+      setErrorState(true);
       return;
     }
+
+    if (mortgage.type == "Only") {
+      alert("En construccion...!");
+      return;
+    }
+
     dispatch(resultCalculate(mortgage));
+    dispatch(resultPaymentMonth(mortgage));
   };
   return (
     <form
@@ -64,6 +78,7 @@ const CardForm = () => {
         direction="left"
         handleChange={handleChange}
         name="amount"
+        error={errorState && mortgage.amount == "" ? true : false}
         value={mortgage.amount}
       />
       <div className="w-[100%] flex flex-col xs:flex-row gap-5">
@@ -74,6 +89,7 @@ const CardForm = () => {
             direction="right"
             handleChange={handleChange}
             name="term"
+            error={errorState && mortgage.term == "" ? true : false}
             value={mortgage.term}
           />
         </div>
@@ -84,6 +100,7 @@ const CardForm = () => {
             direction="right"
             handleChange={handleChange}
             name="rate"
+            error={errorState && mortgage.rate == "" ? true : false}
             value={mortgage.rate}
           />
         </div>
@@ -92,34 +109,27 @@ const CardForm = () => {
         <p className="font-[PlusJakartaMedium] text-[hsl(200,24%,40%)] text-sm">
           Mortgage Type
         </p>
-        <RadioGroup
-          value={selectedValue}
-          onChange={setSelectedValue}
-          defaultValue="Repayment"
-        >
-          <div
-            className={`flex items-center space-x-3 border  rounded-md p-4 ${
-              selectedValue === "Repayment"
-                ? "border-[hsl(61,70%,52%)]"
-                : "border-[hsl(200,24%,40%)]"
-            }`}
-            onClick={() => setSelectedValue("Repayment")}
-          >
-            <RadioGroupItem value="Repayment" id="r1" />
-            <Label htmlFor="r1">Repayment</Label>
-          </div>
-          <div
-            className={`flex items-center space-x-3 border  rounded-md p-4 ${
-              selectedValue === "Only"
-                ? "border-[hsl(61,70%,52%)]"
-                : "border-[hsl(200,24%,40%)]"
-            }`}
-            onClick={() => setSelectedValue("Only")}
-          >
-            <RadioGroupItem value="Only" id="r2" />
-            <Label htmlFor="r2">Interest Only</Label>
-          </div>
-        </RadioGroup>
+        <div className="space-y-4">
+          <InputRadio
+            title="Repayment"
+            name="type"
+            value="Repayment"
+            selectedValue={mortgage.type}
+            onRadioChange={handleChange}
+          />
+          <InputRadio
+            title="Interest Only"
+            name="type"
+            value="Only"
+            selectedValue={mortgage.type}
+            onRadioChange={handleChange}
+          />
+        </div>
+        {errorState && mortgage.type == "" && (
+          <span className="font-[PlusJakartaMedium] text-[hsl(4,69%,50%)] text-xs sm:text-sm">
+            This field required
+          </span>
+        )}
         <Button title={"Calculate Repayments"} icon={calculatorIcon} />
       </div>
     </form>

@@ -87,7 +87,18 @@
   src: url(./assets/fonts/PlusJakartaSans-Medium.ttf);
 }
 
-input{
+input {
   outline: none;
 }
 
+.attribution {
+  font-size: 11px;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+}
+
+.attribution a {
+  color: hsl(1, 83%, 45%);
+  font-weight: bold;
+}

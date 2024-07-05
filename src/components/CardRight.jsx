@@ -4,6 +4,7 @@ import { emptyIcon } from "../assets/icons/icons";
 
 const CardRight = () => {
   const mortgage = useSelector((state) => state.mortgages.value);
+  const total = useSelector((state) => state.mortgages.total_payment);
 
   return (
     <>
@@ -30,13 +31,13 @@ const CardRight = () => {
                 Total you&apos;ll repay over the term
               </h3>
               <span className="font-[PlusJakartaBold] text-[hsl(0,0%,100%)] text-2xl">
-                £539,322.94
+                £{parseFloat(total).toFixed(2)}
               </span>
             </div>
           </div>
         </div>
       ) : (
-        <div className="flex flex-col py-10 px-4 gap-3 bg-[hsl(202,55%,16%)] items-center md:justify-center xs:rounded-b-2xl md:rounded-b-none md:rounded-bl-[5rem] md:rounded-r-2xl">
+        <div className="md:w-[50%] flex flex-col py-10 px-4 gap-3 bg-[hsl(202,55%,16%)] items-center md:justify-center xs:rounded-b-2xl md:rounded-b-none md:rounded-bl-[5rem] md:rounded-r-2xl">
           {emptyIcon}
           <h1 className="font-[PlusJakartaBold] text-[hsl(0,0%,100%)] text-lg text-center">
             Results shown here

@@ -4,10 +4,12 @@ import {
   convertInterestAnual,
   calculatePayment,
   calculateMonthPayment,
+  totalRepayment,
 } from "../../helpers/general";
 
 const initialState = {
   value: 0,
+  total_payment: 0,
 };
 
 export const MortgageSlice = createSlice({
@@ -15,22 +17,29 @@ export const MortgageSlice = createSlice({
   initialState,
   reducers: {
     resultCalculate: (state, action) => {
-      const { amount, term, rate } = action.payload;
-      const monthlyInterestRate = convertInterestAnual(rate);
-      const numberOfPayments = calculatePayment(term);
-      const monthlyPaymen = calculateMonthPayment(
-        amount,
-        monthlyInterestRate,
-        numberOfPayments
-      );
-      state.value = monthlyPaymen ;
+      const { amount, term, rate, type } = action.payload;
+      if (type == "Repayment") {
+        const monthlyInterestRate = convertInterestAnual(rate);
+        const numberOfPayments = calculatePayment(term);
+        const monthlyPaymen = calculateMonthPayment(
+          amount,
+          monthlyInterestRate,
+          numberOfPayments
+        );
+        state.value = monthlyPaymen;
+      }
     },
-    resetAll: (state)=>{
-      state.value = 0
-    }
+    resultPaymentMonth: (state, action) => {
+      const { term } = action.payload;
+      state.total_payment = totalRepayment(state.value, term);
+    },
+    resetAll: (state) => {
+      state.value = 0;
+    },
   },
 });
 
-export const { resultCalculate, resetAll } = MortgageSlice.actions;
+export const { resultCalculate, resultPaymentMonth, resetAll } =
+  MortgageSlice.actions;
 
 export default MortgageSlice.reducer;
